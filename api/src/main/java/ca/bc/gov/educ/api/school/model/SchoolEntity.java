@@ -168,8 +168,11 @@ public class SchoolEntity {
   @Column(name = "SEC_TEACHERS_HC")
   private Long secTeachersHc;
 
-  @Column(name = "COMMENT")
-  private String comment;
+  /**
+   * The 'comment' is a reserved word in Oracle. Using it will cause the SQLGrammarException
+   * @Column(name = "COMMENT")
+   * private String comment;
+   */
 
   @Column(name = "GRADE_KH_IND")
   private String gradeKhInd;

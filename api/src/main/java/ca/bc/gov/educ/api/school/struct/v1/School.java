@@ -167,8 +167,8 @@ public class School implements Serializable {
 
   private Long secTeachersHc;
 
-  @Size(max = 45)
-  private String comment;
+//  @Size(max = 45)
+//  private String comment;
 
   @Size(max = 1)
   private String gradeKhInd;
