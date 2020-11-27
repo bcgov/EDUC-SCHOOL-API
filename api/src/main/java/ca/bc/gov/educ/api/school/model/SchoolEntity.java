@@ -24,13 +24,13 @@ public class SchoolEntity {
   @Column(name = "SC_ADDRESS_LINE_1")
   private String scAddressLine1;
 
-  @Column(name = "SC_ADDRESS_LINE_2")
   private String scAddressLine2;
 
   @Column(name = "SC_CITY")
   private String scCity;
 
   @Column(name = "SC_PROVINCE_CODE")
+  @Column(name = "SC_ADDRESS_LINE_2")
   private String scProvinceCode;
 
   @Column(name = "SC_COUNTRY_CODE")
@@ -168,8 +168,11 @@ public class SchoolEntity {
   @Column(name = "SEC_TEACHERS_HC")
   private Long secTeachersHc;
 
-  @Column(name = "COMMENT")
-  private String comment;
+  /**
+   * The 'comment' is a reserved word in Oracle. Using it will cause the SQLGrammarException
+   * @Column(name = "COMMENT")
+   * private String comment;
+   */
 
   @Column(name = "GRADE_KH_IND")
   private String gradeKhInd;
