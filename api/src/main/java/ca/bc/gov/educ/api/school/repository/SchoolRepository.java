@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SchoolRepository extends CrudRepository<SchoolEntity, MinCode> {
-  //Optional<SchoolEntity> findStudentEntityByPen(String pen);
 }

@@ -16,15 +16,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SchoolAPIMVCConfig implements WebMvcConfigurer {
 
   /**
-   * The Pen reg api interceptor.
+   * The School api interceptor.
    */
   @Getter(AccessLevel.PRIVATE)
   private final SchoolAPIInterceptor schoolAPIInterceptor;
 
   /**
-   * Instantiates a new Pen reg api mvc config.
+   * Instantiates a new School api mvc config.
    *
-   * @param schoolAPIInterceptor the pen reg api interceptor
+   * @param schoolAPIInterceptor the School api interceptor
    */
   @Autowired
   public SchoolAPIMVCConfig(final SchoolAPIInterceptor schoolAPIInterceptor) {

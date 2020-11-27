@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +32,5 @@ public interface SchoolAPIEndpoint {
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to get School Entity.", description = "Endpoint to get School Entity By Mincode.")
   @Schema(name = "School", implementation = School.class)
-  School getSchoolByMinCode(@Param("minCode")  String minCode);
+  School getSchoolByMinCode(@RequestParam("minCode")  String minCode);
 }
