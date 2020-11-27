@@ -158,11 +158,6 @@
       <artifactId>guava</artifactId>
       <version>29.0-jre</version>
     </dependency>
-    <dependency>
-      <groupId>io.nats</groupId>
-      <artifactId>nats-spring-boot-starter</artifactId>
-      <version>0.4.0</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/pl.pragmatists/JUnitParams -->
     <dependency>
       <groupId>pl.pragmatists</groupId>
