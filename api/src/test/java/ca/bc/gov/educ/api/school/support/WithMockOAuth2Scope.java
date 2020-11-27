@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.school.services.support;
+package ca.bc.gov.educ.api.school.support;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

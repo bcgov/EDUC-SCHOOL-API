@@ -5,7 +5,7 @@ import ca.bc.gov.educ.api.school.exception.RestExceptionHandler;
 import ca.bc.gov.educ.api.school.model.MinCode;
 import ca.bc.gov.educ.api.school.model.SchoolEntity;
 import ca.bc.gov.educ.api.school.repository.SchoolRepository;
-import ca.bc.gov.educ.api.school.services.support.WithMockOAuth2Scope;
+import ca.bc.gov.educ.api.school.support.WithMockOAuth2Scope;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.school.services.support;
+package ca.bc.gov.educ.api.school.support;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
