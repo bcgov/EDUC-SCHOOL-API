@@ -13,14 +13,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * The type Min Code.
+ * The type Mincode.
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class MinCode implements Serializable {
+public class Mincode implements Serializable {
   @Column(name = "DISTNO", nullable = false, length = 3)
   protected String distNo;
 
