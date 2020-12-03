@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "SCHOOL")
 public class SchoolEntity {
   @EmbeddedId
-  private MinCode minCode;
+  private Mincode mincode;
 
   @Column(name = "SC_ADDRESS_LINE_1")
   private String scAddressLine1;

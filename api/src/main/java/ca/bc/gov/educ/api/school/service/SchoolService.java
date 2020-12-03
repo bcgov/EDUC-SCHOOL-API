@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Service
 public class SchoolService {
-  private static final String MINCODE_ATTRIBUTE = "minCode";
+  private static final String MINCODE_ATTRIBUTE = "mincode";
   private static final int DISTNO_LENGTH = 3;
 
   /**
@@ -33,23 +33,23 @@ public class SchoolService {
   }
 
   /**
-   * Search for SchoolEntity by MinCode
+   * Search for SchoolEntity by Mincode
    *
-   * @param minCode the unique minCode for a given school.
+   * @param mincode the unique mincode for a given school.
    * @return the School entity if found.
    */
-  public SchoolEntity retrieveSchoolByMinCode(String minCode) {
+  public SchoolEntity retrieveSchoolByMincode(String mincode) {
     Optional<SchoolEntity> result = Optional.empty();
-    if(minCode.length() > DISTNO_LENGTH) {
-      var distNo = minCode.substring(0, DISTNO_LENGTH);
-      var schlNo = minCode.substring(DISTNO_LENGTH);
-      result = schoolRepository.findById(MinCode.builder().distNo(distNo).schlNo(schlNo).build());
+    if(mincode.length() > DISTNO_LENGTH) {
+      var distNo = mincode.substring(0, DISTNO_LENGTH);
+      var schlNo = mincode.substring(DISTNO_LENGTH);
+      result = schoolRepository.findById(Mincode.builder().distNo(distNo).schlNo(schlNo).build());
     }
 
     if (result.isPresent()) {
       return result.get();
     } else {
-      throw new EntityNotFoundException(SchoolEntity.class, MINCODE_ATTRIBUTE, minCode);
+      throw new EntityNotFoundException(SchoolEntity.class, MINCODE_ATTRIBUTE, mincode);
     }
   }
 }

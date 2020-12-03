@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * The type Pen validation api controller.
+ * The type School api controller.
  */
 @RestController
 @EnableResourceServer
@@ -28,7 +28,7 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   private static final SchoolMapper mapper = SchoolMapper.mapper;
 
   /**
-   * Instantiates a new Pen validation api controller.
+   * Instantiates a new School api controller.
    *
    * @param service    the service
    */
@@ -38,8 +38,8 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   }
 
   @Override
-  public School getSchoolByMinCode(String minCode) {
-    return mapper.toStructure(getService().retrieveSchoolByMinCode(minCode));
+  public School getSchoolByMinCode(String mincode) {
+    return mapper.toStructure(getService().retrieveSchoolByMincode(mincode));
   }
 
 }

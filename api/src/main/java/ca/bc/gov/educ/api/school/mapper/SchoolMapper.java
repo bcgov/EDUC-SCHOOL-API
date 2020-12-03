@@ -14,7 +14,7 @@ public interface SchoolMapper {
 
     SchoolEntity toModel(School school);
 
-    @Mapping(target = "distNo", source="schoolEntity.minCode.distNo")
-    @Mapping(target = "schlNo", source="schoolEntity.minCode.schlNo")
+    @Mapping(target = "distNo", source="schoolEntity.mincode.distNo")
+    @Mapping(target = "schlNo", source="schoolEntity.mincode.schlNo")
     School toStructure(SchoolEntity schoolEntity);
 }

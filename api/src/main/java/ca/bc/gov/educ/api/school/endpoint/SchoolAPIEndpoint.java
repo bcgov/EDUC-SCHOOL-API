@@ -23,7 +23,7 @@ public interface SchoolAPIEndpoint {
   /**
    * Get school by mincode.
    *
-   * @param minCode the minCode
+   * @param mincode the mincode
    * @return the pen request batch
    */
   @GetMapping
@@ -32,5 +32,5 @@ public interface SchoolAPIEndpoint {
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to get School Entity.", description = "Endpoint to get School Entity By Mincode.")
   @Schema(name = "School", implementation = School.class)
-  School getSchoolByMinCode(@RequestParam("minCode")  String minCode);
+  School getSchoolByMinCode(@RequestParam("mincode")  String mincode);
 }
