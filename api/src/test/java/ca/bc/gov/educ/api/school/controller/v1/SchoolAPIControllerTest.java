@@ -5,6 +5,7 @@ import ca.bc.gov.educ.api.school.exception.RestExceptionHandler;
 import ca.bc.gov.educ.api.school.model.Mincode;
 import ca.bc.gov.educ.api.school.model.SchoolEntity;
 import ca.bc.gov.educ.api.school.repository.SchoolRepository;
+import ca.bc.gov.educ.api.school.service.SchoolService;
 import ca.bc.gov.educ.api.school.support.WithMockOAuth2Scope;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -49,6 +50,8 @@ public class SchoolAPIControllerTest {
   SchoolRepository schoolRepository;
 
   private SchoolEntity schoolEntity;
+  @Autowired
+  SchoolService schoolService;
 
   /**
    * Sets up.
@@ -74,6 +77,7 @@ public class SchoolAPIControllerTest {
   @Test
   @WithMockOAuth2Scope(scope = "READ_SCHOOL")
   public void testGetSchool_GivenValidMincode_ShouldReturnStatusOK() throws Exception {
+    schoolService.reloadCache();
     this.mockMvc.perform(get("/api/v1/schools?mincode=12345678")).andDo(print()).andExpect(status().isOk())
       .andExpect(MockMvcResultMatchers.jsonPath("$.schoolName").value(schoolEntity.getSchoolName()));
   }
