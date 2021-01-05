@@ -29,7 +29,7 @@ public interface SchoolAPIEndpoint {
    * @return the pen request batch
    */
   @GetMapping("/{minCode}")
-  @PreAuthorize("#oauth2.hasScope('READ_SCHOOL')")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SCHOOL')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to get School Entity.", description = "Endpoint to get School Entity By Mincode.")
@@ -42,10 +42,10 @@ public interface SchoolAPIEndpoint {
    * @return the all schools
    */
   @GetMapping
-  @PreAuthorize("#oauth2.hasScope('READ_SCHOOL')")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SCHOOL')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
   @Transactional(readOnly = true)
-  @Tag(name = "Endpoint to get All School Entity.", description = "Endpoint to get School Entity By Mincode.")
+  @Tag(name = "Endpoint to get All School Entity.", description = "Endpoint to get All School Entity.")
   @Schema(name = "School", implementation = School.class)
   List<School> getAllSchools();
 }
