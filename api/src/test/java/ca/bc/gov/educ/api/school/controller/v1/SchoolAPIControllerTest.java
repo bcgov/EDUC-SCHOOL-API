@@ -20,10 +20,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.IOException;
-
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {SchoolApiResourceApplication.class})
 //@ActiveProfiles("test")
 @Slf4j
-@SuppressWarnings({"java:S112", "java:S100", "java:S1192","java:S2699"})
+@SuppressWarnings({"java:S112", "java:S100", "java:S1192", "java:S2699"})
 public class SchoolAPIControllerTest {
 
   /**
@@ -56,14 +56,13 @@ public class SchoolAPIControllerTest {
   /**
    * Sets up.
    *
-   * @throws IOException the io exception
    */
   @Before
-  public void setUp() throws IOException {
+  public void setUp() {
     MockitoAnnotations.openMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new RestExceptionHandler()).build();
-    schoolEntity = schoolRepository.save(createSchool("123", "45678"));
+        .setControllerAdvice(new RestExceptionHandler()).build();
+    schoolEntity = schoolRepository.save(createSchool());
   }
 
   /**
@@ -78,28 +77,35 @@ public class SchoolAPIControllerTest {
   @WithMockOAuth2Scope(scope = "READ_SCHOOL")
   public void testGetSchool_GivenValidMincode_ShouldReturnStatusOK() throws Exception {
     schoolService.reloadCache();
-    this.mockMvc.perform(get("/api/v1/schools?mincode=12345678")).andDo(print()).andExpect(status().isOk())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.schoolName").value(schoolEntity.getSchoolName()));
+    this.mockMvc.perform(get("/api/v1/schools/12345678")).andDo(print()).andExpect(status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.schoolName").value(schoolEntity.getSchoolName()));
+  }
+
+
+  @Test
+  @WithMockOAuth2Scope(scope = "READ_SCHOOL")
+  public void testGetAllSchool_GivenNoInput_ShouldReturnStatusOK() throws Exception {
+    schoolService.reloadCache();
+    this.mockMvc.perform(get("/api/v1/schools")).andDo(print()).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
   @WithMockOAuth2Scope(scope = "READ_SCHOOL")
   public void testGetSchool_GivenNotExistMincode_ShouldReturnStatusNotFound() throws Exception {
-    this.mockMvc.perform(get("/api/v1/schools?mincode=12345670")).andDo(print()).andExpect(status().isNotFound());
+    this.mockMvc.perform(get("/api/v1/schools/12345670")).andDo(print()).andExpect(status().isNotFound());
   }
 
   @Test
   @WithMockOAuth2Scope(scope = "READ_SCHOOL")
   public void testGetSchool_GivenInvalidMincode_ShouldReturnStatusNotFound() throws Exception {
-    this.mockMvc.perform(get("/api/v1/schools?mincode=12")).andDo(print()).andExpect(status().isNotFound());
+    this.mockMvc.perform(get("/api/v1/schools/12")).andDo(print()).andExpect(status().isNotFound());
   }
 
-  private SchoolEntity createSchool(String distNo, String schlNo) {
-    var mincode = Mincode.builder().distNo(distNo).schlNo(schlNo).build();
-    var school = SchoolEntity.builder()
-      .mincode(mincode)
-      .schoolName("Victoria High School")
-      .build();
-    return school;
+  private SchoolEntity createSchool() {
+    var mincode = Mincode.builder().distNo("123").schlNo("45678").build();
+    return SchoolEntity.builder()
+        .mincode(mincode)
+        .schoolName("Victoria High School")
+        .build();
   }
 }

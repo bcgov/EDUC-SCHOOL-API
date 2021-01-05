@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * The type Mincode.
@@ -21,9 +18,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Embeddable
 public class Mincode implements Serializable {
+  /**
+   * The Dist no.
+   */
   @Column(name = "DISTNO", nullable = false, length = 3)
   protected String distNo;
 
+  /**
+   * The Schl no.
+   */
   @Column(name = "SCHLNO", nullable = false, length = 5)
   protected String schlNo;
 }
