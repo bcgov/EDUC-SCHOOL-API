@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.school.endpoint;
+package ca.bc.gov.educ.api.school.endpoint.v1;
 
 import ca.bc.gov.educ.api.school.struct.v1.*;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

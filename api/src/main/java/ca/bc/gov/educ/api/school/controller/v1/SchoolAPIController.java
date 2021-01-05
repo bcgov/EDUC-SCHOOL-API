@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.school.controller.v1;
 
-import ca.bc.gov.educ.api.school.endpoint.SchoolAPIEndpoint;
+import ca.bc.gov.educ.api.school.endpoint.v1.SchoolAPIEndpoint;
 import ca.bc.gov.educ.api.school.mapper.SchoolMapper;
 import ca.bc.gov.educ.api.school.service.SchoolService;
 import ca.bc.gov.educ.api.school.struct.v1.School;
