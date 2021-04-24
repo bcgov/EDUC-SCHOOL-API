@@ -59,6 +59,7 @@ public class PenCoordinatorService {
 
   private void populatePenCoordinatorMap() {
     this.penCoordinatorMap = this.penCoordinatorRepository.findAll().stream().collect(Collectors.toConcurrentMap(PenCoordinatorEntity::getMincode, Function.identity()));
+    log.info("loaded {} entries into min code penCoordinatorMap map", penCoordinatorMap.values().size());
   }
 
   @Scheduled(cron = "${schedule.jobs.load.pen.coordinators.cron}") // 0 0/15 * * * * every 15 minutes
