@@ -1,10 +1,10 @@
-package ca.bc.gov.educ.api.school.service;
+package ca.bc.gov.educ.api.school.service.v1;
 
 import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
-import ca.bc.gov.educ.api.school.model.Mincode;
-import ca.bc.gov.educ.api.school.model.SchoolEntity;
-import ca.bc.gov.educ.api.school.repository.SchoolRepository;
+import ca.bc.gov.educ.api.school.model.v1.Mincode;
+import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
+import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,10 @@
 package ca.bc.gov.educ.api.school.controller.v1;
 
 import ca.bc.gov.educ.api.school.SchoolApiResourceApplication;
-import ca.bc.gov.educ.api.school.model.Mincode;
-import ca.bc.gov.educ.api.school.model.SchoolEntity;
-import ca.bc.gov.educ.api.school.repository.SchoolRepository;
-import ca.bc.gov.educ.api.school.service.SchoolService;
+import ca.bc.gov.educ.api.school.model.v1.Mincode;
+import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
+import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
+import ca.bc.gov.educ.api.school.service.v1.SchoolService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;

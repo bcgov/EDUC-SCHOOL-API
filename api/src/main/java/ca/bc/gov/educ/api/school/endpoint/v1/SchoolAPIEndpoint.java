@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -48,4 +49,18 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to get All School Entity.", description = "Endpoint to get All School Entity.")
   @Schema(name = "School", implementation = School.class)
   List<School> getAllSchools();
+
+  /**
+   * Get pen coordinator by mincode.
+   *
+   * @param mincode the mincode
+   * @return the pen request batch
+   */
+  @GetMapping("/{mincode}/pen-coordinator")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SCHOOL')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
+  @Transactional(readOnly = true)
+  @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
+  @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
+  ResponseEntity<PenCoordinator> getPenCoordinatorMinCode(@PathVariable("mincode")  String mincode);
 }

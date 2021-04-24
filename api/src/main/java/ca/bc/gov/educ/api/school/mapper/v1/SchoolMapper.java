@@ -1,6 +1,8 @@
-package ca.bc.gov.educ.api.school.mapper;
+package ca.bc.gov.educ.api.school.mapper.v1;
 
-import ca.bc.gov.educ.api.school.model.SchoolEntity;
+import ca.bc.gov.educ.api.school.mapper.LocalDateTimeMapper;
+import ca.bc.gov.educ.api.school.mapper.StringMapper;
+import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
 import ca.bc.gov.educ.api.school.struct.v1.School;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
