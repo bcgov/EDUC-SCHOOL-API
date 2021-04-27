@@ -57,7 +57,7 @@ public interface SchoolAPIEndpoint {
    * @return the pen request batch
    */
   @GetMapping("/{mincode}/pen-coordinator")
-  @PreAuthorize("hasAuthority('SCOPE_READ_SCHOOL')")
+  @PreAuthorize("hasAuthority('SCOPE_READ_PEN_COORDINATOR')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
