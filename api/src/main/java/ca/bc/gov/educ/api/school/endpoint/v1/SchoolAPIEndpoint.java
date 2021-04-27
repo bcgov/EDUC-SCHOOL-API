@@ -62,5 +62,5 @@ public interface SchoolAPIEndpoint {
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
   @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
-  ResponseEntity<PenCoordinator> getPenCoordinatorMinCode(@PathVariable("mincode")  String mincode);
+  ResponseEntity<PenCoordinator> getPenCoordinatorByMinCode(@PathVariable("mincode")  String mincode);
 }
