@@ -59,4 +59,9 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
     return ResponseEntity.ok(this.penCoordinatorService.getPenCoordinatorByMinCode(mincode).orElseThrow(EntityNotFoundException::new));
   }
 
+  @Override
+  public List<PenCoordinator> getPenCoordinators() {
+    return this.penCoordinatorService.getPenCoordinators();
+  }
+
 }

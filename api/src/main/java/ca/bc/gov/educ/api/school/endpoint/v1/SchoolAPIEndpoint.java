@@ -63,4 +63,17 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
   @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
   ResponseEntity<PenCoordinator> getPenCoordinatorByMinCode(@PathVariable("mincode")  String mincode);
+
+  /**
+   * Get pen coordinator by mincode.
+   *
+   * @return the pen request batch
+   */
+  @GetMapping("/pen-coordinator")
+  @PreAuthorize("hasAuthority('SCOPE_READ_PEN_COORDINATOR')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+  @Transactional(readOnly = true)
+  @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
+  @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
+  List<PenCoordinator> getPenCoordinators();
 }

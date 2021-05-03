@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executor;
@@ -83,5 +84,9 @@ public class PenCoordinatorService {
     }
     val ministryCode = Mincode.builder().distNo(mincode.substring(0, 3)).schlNo(mincode.substring(3, 8)).build();
     return Optional.ofNullable(PenCoordinatorMapper.mapper.toStruct(this.penCoordinatorMap.get(ministryCode)));
+  }
+
+  public List<PenCoordinator> getPenCoordinators() {
+    return this.penCoordinatorMap.values().stream().map(PenCoordinatorMapper.mapper::toStruct).collect(Collectors.toList());
   }
 }
