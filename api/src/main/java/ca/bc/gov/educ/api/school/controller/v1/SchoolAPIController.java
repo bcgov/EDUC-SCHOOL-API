@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -51,7 +50,7 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
 
   @Override
   public List<School> getAllSchools() {
-    return getService().retrieveAllSchools().stream().map(mapper::toStructure).collect(Collectors.toList());
+    return getService().retrieveAllSchoolStructs();
   }
 
   @Override

@@ -2,9 +2,11 @@ package ca.bc.gov.educ.api.school.service.v1;
 
 import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
+import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
 import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
+import ca.bc.gov.educ.api.school.struct.v1.School;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -14,10 +16,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
@@ -39,6 +41,7 @@ public class SchoolService {
    */
   @Getter(PRIVATE)
   private final SchoolRepository schoolRepository;
+  private List<School> schools = new ArrayList<>();
   private Map<Mincode, SchoolEntity> mincodeSchoolEntityMap;
 
   /**
@@ -76,9 +79,9 @@ public class SchoolService {
    *
    * @return the list
    */
-  public List<SchoolEntity> retrieveAllSchools() {
+  public List<School> retrieveAllSchoolStructs() {
     try {
-      return new CopyOnWriteArrayList<>(this.mincodeSchoolEntityMap.values());
+      return this.schools;
     } catch (final Exception exception) {
       throw new SchoolAPIRuntimeException(exception.getMessage());
     }
@@ -97,7 +100,8 @@ public class SchoolService {
     try {
       writeLock.lock();
       this.mincodeSchoolEntityMap = schoolRepository.findAll().stream().collect(Collectors.toConcurrentMap(SchoolEntity::getMincode, Function.identity()));
-      log.info("loaded {} entries into min code school map", mincodeSchoolEntityMap.values().size());
+      this.schools = mincodeSchoolEntityMap.values().stream().map(SchoolMapper.mapper::toStructure).collect(Collectors.toList());
+      log.info("loaded {} entries into min code school map", this.schools.size());
     } finally {
       writeLock.unlock();
     }
