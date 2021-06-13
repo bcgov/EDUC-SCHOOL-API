@@ -14,7 +14,8 @@
     <sonar.exclusions>
       src/main/resources/**,src/main/java/ca/bc/gov/educ/api/school/endpoint/**,src/main/java/ca/bc/gov/educ/api/school/struct/**
       ,src/main/java/ca/bc/gov/educ/api/school/model/**,src/main/java/ca/bc/gov/educ/api/school/rest/**
-      ,src/main/java/ca/bc/gov/educ/api/school/messaging/**
+      ,src/main/java/ca/bc/gov/educ/api/school/messaging/**,
+      src/main/java/ca/bc/gov/educ/api/school/helpers/**,
     </sonar.exclusions>
     <java.version>11</java.version>
 

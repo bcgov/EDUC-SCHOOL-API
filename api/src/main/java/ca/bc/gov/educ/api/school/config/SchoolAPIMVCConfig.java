@@ -19,16 +19,15 @@ public class SchoolAPIMVCConfig implements WebMvcConfigurer {
    * The School api interceptor.
    */
   @Getter(AccessLevel.PRIVATE)
-  private final SchoolAPIInterceptor schoolAPIInterceptor;
-
+  private final RequestResponseInterceptor requestResponseInterceptor;
   /**
    * Instantiates a new School api mvc config.
    *
-   * @param schoolAPIInterceptor the School api interceptor
+   * @param requestResponseInterceptor the School api interceptor
    */
   @Autowired
-  public SchoolAPIMVCConfig(final SchoolAPIInterceptor schoolAPIInterceptor) {
-    this.schoolAPIInterceptor = schoolAPIInterceptor;
+  public SchoolAPIMVCConfig(final RequestResponseInterceptor requestResponseInterceptor) {
+    this.requestResponseInterceptor = requestResponseInterceptor;
   }
 
   /**
@@ -38,6 +37,6 @@ public class SchoolAPIMVCConfig implements WebMvcConfigurer {
    */
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(schoolAPIInterceptor).addPathPatterns("/**");
+    registry.addInterceptor(requestResponseInterceptor).addPathPatterns("/**");
   }
 }
