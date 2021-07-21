@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,6 +64,19 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
   @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
   ResponseEntity<PenCoordinator> getPenCoordinatorByMinCode(@PathVariable("mincode")  String mincode);
+
+  /**
+   * Update pen coordinator by mincode.
+   *
+   * @param mincode the mincode
+   * @return the pen coordinator
+   */
+  @PutMapping("/{mincode}/pen-coordinator")
+  @PreAuthorize("hasAuthority('SCOPE_WRITE_PEN_COORDINATOR')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
+  @Tag(name = "Endpoint to Update Pen Coordinator by Mincode.", description = "Endpoint to Update Pen Coordinator by Mincode.")
+  @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
+  ResponseEntity<PenCoordinator> updatePenCoordinatorByMinCode(@PathVariable("mincode")  String mincode, @Validated @RequestBody PenCoordinator penCoordinator);
 
   /**
    * Get pen coordinator by mincode.
