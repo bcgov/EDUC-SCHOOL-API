@@ -36,6 +36,13 @@ curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scope
   -H "Authorization: Bearer $TKN" \
   -d "{\"description\": \"Read scope for pen coordinator\",\"id\": \"READ_PEN_COORDINATOR\",\"name\": \"READ_PEN_COORDINATOR\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
+echo
+echo Writing scope WRITE_PEN_COORDINATOR
+curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TKN" \
+  -d "{\"description\": \"Write scope for pen coordinator\",\"id\": \"WRITE_PEN_COORDINATOR\",\"name\": \"WRITE_PEN_COORDINATOR\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+
 ###########################################################
 #Setup for config-map
 ###########################################################

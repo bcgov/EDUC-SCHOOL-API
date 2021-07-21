@@ -39,13 +39,10 @@ public class PenCoordinatorServiceTest {
     final List<PenCoordinator> structs = new ObjectMapper().readValue(file, new TypeReference<>() {
     });
     this.coordinatorRepository.saveAll(structs.stream().map(PenCoordinatorMapper.mapper::toModel).collect(Collectors.toList()));
-    this.service.setPenCoordinatorMap(this.coordinatorRepository.findAll().stream()
-      .collect(Collectors.toConcurrentMap(PenCoordinatorEntity::getMincode, Function.identity())));
   }
 
   @Test
   public void testGetPenCoordinator_givenDifferentInputs_shouldProduceOutput() {
-    this.service.init();
     val data = this.service.getPenCoordinatorByMinCode("123546789");
     assertThat(data).isEmpty();
     val dataOptional = this.service.getPenCoordinatorByMinCode("19337120");
@@ -55,7 +52,6 @@ public class PenCoordinatorServiceTest {
 
   @Test
   public void testGetPenCoordinatorEmail_givenDifferentInputsOfMincodeObject_shouldProduceOutput() {
-    this.service.init();
     val data = this.service.getPenCoordinatorByMinCode(Mincode.builder().distNo("123").schlNo("45678").build());
     assertThat(data).isEmpty();
     val dataOptional = this.service.getPenCoordinatorByMinCode(Mincode.builder().distNo("193").schlNo("37120").build());

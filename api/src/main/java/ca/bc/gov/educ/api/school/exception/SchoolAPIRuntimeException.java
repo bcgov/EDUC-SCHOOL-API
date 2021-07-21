@@ -19,4 +19,14 @@ public class SchoolAPIRuntimeException extends RuntimeException {
 		super(message);
 	}
 
+  /**
+   * Instantiates a new School api runtime exception.
+   *
+   * @param message the message
+   * @param cause the cause of the exception
+   */
+  public SchoolAPIRuntimeException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }
