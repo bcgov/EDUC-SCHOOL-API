@@ -149,15 +149,6 @@ public class SchoolAPIControllerTest {
   }
 
   @Test
-  public void testUpdatePenCoordinator_GivenInvalidPenCoordinatorName_ShouldReturnStatusBadRequest() throws Exception {
-    var mincode = "11253675";
-    var penCoordinator = PenCoordinator.builder().mincode(mincode).penCoordinatorName("").penCoordinatorEmail("new@test.com").build();
-
-    this.mockMvc.perform(put("/api/v1/schools/{mincode}/pen-coordinator", mincode).with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_PEN_COORDINATOR"))).contentType(MediaType.APPLICATION_JSON)
-      .accept(MediaType.APPLICATION_JSON).content(asJsonString(penCoordinator))).andDo(print()).andExpect(status().isBadRequest());
-  }
-
-  @Test
   public void testUpdatePenCoordinator_GivenInvalidPenCoordinatorEmail_ShouldReturnStatusBadRequest() throws Exception {
     var mincode = "11253675";
     var penCoordinator = PenCoordinator.builder().mincode(mincode).penCoordinatorName("new coord name").penCoordinatorEmail("test.com").build();

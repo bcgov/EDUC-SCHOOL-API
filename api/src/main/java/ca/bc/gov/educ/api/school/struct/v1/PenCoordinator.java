@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
@@ -20,7 +19,6 @@ public class PenCoordinator {
   String districtNumber;
   String schoolNumber;
   @Size(max = 40)
-  @NotBlank(message = "Legal Last Name can not be blank.")
   String penCoordinatorName;
   @Size(max = 100)
   @Email(message = "Email must be valid email address.")
