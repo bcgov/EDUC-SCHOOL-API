@@ -3,30 +3,17 @@ package ca.bc.gov.educ.api.school.service.v1;
 import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
 import ca.bc.gov.educ.api.school.mapper.v1.PenCoordinatorMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
-import ca.bc.gov.educ.api.school.model.v1.PenCoordinatorEntity;
 import ca.bc.gov.educ.api.school.repository.v1.PenCoordinatorRepository;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.threads.EnhancedQueueExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
-import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.Executor;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,10 +87,10 @@ public class PenCoordinatorService {
     val builder = new StringBuilder();
     builder
       .append("UPDATE PEN_COORDINATOR SET PEN_COORDINATOR_NAME='") // end with beginning single quote
-      .append(penCoordinator.getPenCoordinatorName())
+      .append(StringUtils.trimToEmpty(penCoordinator.getPenCoordinatorName()))
       .append("'") // end single quote
       .append(", PEN_COORDINATOR_EMAIL='") // end with beginning single quote
-      .append(penCoordinator.getPenCoordinatorEmail())
+      .append(StringUtils.trimToEmpty(penCoordinator.getPenCoordinatorEmail()))
       .append("'") // end single quote
       .append(" WHERE ") // starts and ends with a space for valid sql statement
       .append("DISTNO='") // end with beginning single quote
