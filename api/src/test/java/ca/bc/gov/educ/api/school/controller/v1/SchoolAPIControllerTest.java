@@ -11,6 +11,7 @@ import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.core.IsNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -146,6 +147,16 @@ public class SchoolAPIControllerTest {
 
     this.mockMvc.perform(put("/api/v1/schools/{mincode}/pen-coordinator", mincode).with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_PEN_COORDINATOR"))).contentType(MediaType.APPLICATION_JSON)
       .accept(MediaType.APPLICATION_JSON).content(asJsonString(penCoordinator))).andDo(print()).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void testUpdatePenCoordinator_GivenNullPenCoordinatorName_ShouldReturnStatusOK() throws Exception {
+    var mincode = "11253675";
+    var penCoordinator = PenCoordinator.builder().mincode(mincode).penCoordinatorName(null).penCoordinatorEmail("new@test.com").build();
+
+    this.mockMvc.perform(put("/api/v1/schools/{mincode}/pen-coordinator", mincode).with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_PEN_COORDINATOR"))).contentType(MediaType.APPLICATION_JSON)
+      .accept(MediaType.APPLICATION_JSON).content(asJsonString(penCoordinator))).andDo(print()).andExpect(status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.penCoordinatorName").value(""));
   }
 
   @Test
