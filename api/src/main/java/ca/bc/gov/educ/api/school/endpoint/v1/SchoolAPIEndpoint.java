@@ -1,6 +1,8 @@
 package ca.bc.gov.educ.api.school.endpoint.v1;
 
-import ca.bc.gov.educ.api.school.struct.v1.*;
+import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCodes;
+import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
+import ca.bc.gov.educ.api.school.struct.v1.School;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -90,4 +92,12 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to Pen Coordinator by Mincode.", description = "Endpoint to Pen Coordinator by Mincode.")
   @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
   List<PenCoordinator> getPenCoordinators();
+
+  @GetMapping("/federal-province-codes") // implicit to be nom school.
+  @PreAuthorize("hasAuthority('SCOPE_READ_FED_PROV_CODE')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+  @Transactional(readOnly = true)
+  @Tag(name = "Endpoint to get All Federal to Provincial mapped data using key.", description = "Endpoint to get All Federal to Provincial mapped data using key.")
+  @Schema(name = "FedProvSchoolCodes", implementation = FedProvSchoolCodes.class)
+  List<FedProvSchoolCodes> getFedProvCodes();
 }
