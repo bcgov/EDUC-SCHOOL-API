@@ -5,6 +5,7 @@ import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
 import ca.bc.gov.educ.api.school.service.v1.PenCoordinatorService;
 import ca.bc.gov.educ.api.school.service.v1.SchoolService;
+import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCodes;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import ca.bc.gov.educ.api.school.struct.v1.School;
 import lombok.AccessLevel;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -66,6 +69,11 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   @Override
   public List<PenCoordinator> getPenCoordinators() {
     return this.penCoordinatorService.getPenCoordinators();
+  }
+
+  @Override
+  public List<FedProvSchoolCodes> getFedProvCodes() {
+    return this.service.getFedProvCodes("NOM_SCHL").stream().filter(Objects::nonNull).map(SchoolMapper.mapper::toStruct).collect(Collectors.toList());
   }
 
 }
