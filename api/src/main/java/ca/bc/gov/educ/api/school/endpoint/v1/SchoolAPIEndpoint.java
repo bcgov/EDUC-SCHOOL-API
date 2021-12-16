@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.school.endpoint.v1;
 
-import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCodes;
+import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCode;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import ca.bc.gov.educ.api.school.struct.v1.School;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -98,6 +98,13 @@ public interface SchoolAPIEndpoint {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
   @Transactional(readOnly = true)
   @Tag(name = "Endpoint to get All Federal to Provincial mapped data using key.", description = "Endpoint to get All Federal to Provincial mapped data using key.")
-  @Schema(name = "FedProvSchoolCodes", implementation = FedProvSchoolCodes.class)
-  List<FedProvSchoolCodes> getFedProvCodes();
+  @Schema(name = "FedProvSchoolCodes", implementation = FedProvSchoolCode.class)
+  List<FedProvSchoolCode> getFedProvCodes();
+
+  @PostMapping("/federal-province-codes") // implicit to be nom school.
+  @PreAuthorize("hasAuthority('SCOPE_WRITE_FED_PROV_CODE')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST")})
+  @Tag(name = "Endpoint to create FedProvSchoolCode.", description = "Endpoint to create FedProvSchoolCode.")
+  @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
+  ResponseEntity<FedProvSchoolCode> createFedProvCode(@Validated @RequestBody FedProvSchoolCode fedProvSchoolCode);
 }
