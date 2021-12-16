@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 public abstract class BaseService {
   protected final EntityManagerFactory emf;
 
-  public BaseService(EntityManagerFactory emf) {
+  protected BaseService(EntityManagerFactory emf) {
     this.emf = emf;
   }
 
