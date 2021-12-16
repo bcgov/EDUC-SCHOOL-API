@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.school.service.v1;
 import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
 import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
-import ca.bc.gov.educ.api.school.model.v1.FedProvCode;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
 import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
@@ -117,9 +116,5 @@ public class SchoolService {
     log.info("started reloading cache..");
     this.setSchoolData();
     log.info("reloading cache completed..");
-  }
-
-  public List<FedProvCode> getFedProvCodes(final String mappingKey) {
-    return this.schoolRepository.findAllFedAndProvSchoolCodesByMappingKey(mappingKey);
   }
 }

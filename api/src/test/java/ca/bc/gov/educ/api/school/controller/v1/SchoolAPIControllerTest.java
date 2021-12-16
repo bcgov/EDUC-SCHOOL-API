@@ -4,14 +4,16 @@ import ca.bc.gov.educ.api.school.SchoolApiResourceApplication;
 import ca.bc.gov.educ.api.school.mapper.v1.PenCoordinatorMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
+import ca.bc.gov.educ.api.school.repository.v1.FedProvCodeRepository;
 import ca.bc.gov.educ.api.school.repository.v1.PenCoordinatorRepository;
 import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
+import ca.bc.gov.educ.api.school.service.v1.FedProvCodeService;
 import ca.bc.gov.educ.api.school.service.v1.SchoolService;
+import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCode;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.core.IsNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +37,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,6 +68,12 @@ public class SchoolAPIControllerTest {
   SchoolRepository schoolRepository;
 
   @Autowired
+  FedProvCodeRepository fedProvCodeRepository;
+
+  @Autowired
+  FedProvCodeService fedProvCodeService;
+
+  @Autowired
   PenCoordinatorRepository coordinatorRepository;
 
   private SchoolEntity schoolEntity;
@@ -93,6 +100,7 @@ public class SchoolAPIControllerTest {
   @After
   public void after() {
     schoolRepository.deleteAll();
+    fedProvCodeRepository.deleteAll();
   }
 
   @Test
@@ -166,6 +174,28 @@ public class SchoolAPIControllerTest {
 
     this.mockMvc.perform(put("/api/v1/schools/{mincode}/pen-coordinator", mincode).with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_PEN_COORDINATOR"))).contentType(MediaType.APPLICATION_JSON)
       .accept(MediaType.APPLICATION_JSON).content(asJsonString(penCoordinator))).andDo(print()).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void testCreateFedProvCode_GivenValidFedProvSchoolCode_ShouldReturnStatusOK() throws Exception {
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+
+    this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
+      .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.federalCode").value(fedProvCode.getFederalCode()))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.provincialCode").value(fedProvCode.getProvincialCode()));
+  }
+
+  @Test
+  public void testGetFedProvCodes_ShouldReturnStatusOK() throws Exception {
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+    this.fedProvCodeService.createFedProvCode(fedProvCode);
+
+    this.mockMvc.perform(get("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "READ_FED_PROV_CODE")))
+      .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
+      .andExpect(jsonPath("$", hasSize(1)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[0].federalCode").value(fedProvCode.getFederalCode()))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[0].provincialCode").value(fedProvCode.getProvincialCode()));
   }
 
   private SchoolEntity createSchool() {

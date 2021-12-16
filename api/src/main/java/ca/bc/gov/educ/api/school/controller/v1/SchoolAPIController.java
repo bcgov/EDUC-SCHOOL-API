@@ -2,10 +2,12 @@ package ca.bc.gov.educ.api.school.controller.v1;
 
 import ca.bc.gov.educ.api.school.endpoint.v1.SchoolAPIEndpoint;
 import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
+import ca.bc.gov.educ.api.school.mapper.v1.FedProvCodeMapper;
 import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
+import ca.bc.gov.educ.api.school.service.v1.FedProvCodeService;
 import ca.bc.gov.educ.api.school.service.v1.PenCoordinatorService;
 import ca.bc.gov.educ.api.school.service.v1.SchoolService;
-import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCodes;
+import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCode;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import ca.bc.gov.educ.api.school.struct.v1.School;
 import lombok.AccessLevel;
@@ -30,9 +32,11 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
    * The constant mapper.
    */
   private static final SchoolMapper mapper = SchoolMapper.mapper;
+  private static final FedProvCodeMapper fedProvCodeMapper = FedProvCodeMapper.mapper;
   @Getter(AccessLevel.PRIVATE)
   private final SchoolService service;
   private final PenCoordinatorService penCoordinatorService;
+  private final FedProvCodeService fedProvCodeService;
 
   /**
    * Instantiates a new School api controller.
@@ -41,9 +45,10 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
    * @param penCoordinatorService the pen coordinator service
    */
   @Autowired
-  public SchoolAPIController(SchoolService service, PenCoordinatorService penCoordinatorService) {
+  public SchoolAPIController(SchoolService service, PenCoordinatorService penCoordinatorService, FedProvCodeService fedProvCodeService) {
     this.service = service;
     this.penCoordinatorService = penCoordinatorService;
+    this.fedProvCodeService = fedProvCodeService;
   }
 
   @Override
@@ -72,8 +77,12 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   }
 
   @Override
-  public List<FedProvSchoolCodes> getFedProvCodes() {
-    return this.service.getFedProvCodes("NOM_SCHL").stream().filter(Objects::nonNull).map(SchoolMapper.mapper::toStruct).collect(Collectors.toList());
+  public List<FedProvSchoolCode> getFedProvCodes() {
+    return this.fedProvCodeService.getFedProvCodes("NOM_SCHL").stream().filter(Objects::nonNull).map(fedProvCodeMapper::toStruct).collect(Collectors.toList());
   }
 
+  @Override
+  public ResponseEntity<FedProvSchoolCode> createFedProvCode(FedProvSchoolCode fedProvSchoolCode) {
+    return ResponseEntity.ok(this.fedProvCodeService.createFedProvCode(fedProvSchoolCode));
+  }
 }

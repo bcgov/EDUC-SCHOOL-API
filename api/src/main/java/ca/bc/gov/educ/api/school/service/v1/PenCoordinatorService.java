@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.school.service.v1;
 
-import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
 import ca.bc.gov.educ.api.school.mapper.v1.PenCoordinatorMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.repository.v1.PenCoordinatorRepository;
@@ -18,15 +17,13 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PenCoordinatorService {
+public class PenCoordinatorService extends BaseService {
   private final PenCoordinatorRepository penCoordinatorRepository;
-
-  private final EntityManagerFactory emf;
 
   @Autowired
   public PenCoordinatorService(final PenCoordinatorRepository penCoordinatorRepository, final EntityManagerFactory emf) {
+    super(emf);
     this.penCoordinatorRepository = penCoordinatorRepository;
-    this.emf = emf;
   }
 
   public Optional<PenCoordinator> getPenCoordinatorByMinCode(final Mincode mincode) {
@@ -57,30 +54,6 @@ public class PenCoordinatorService {
 
   public List<PenCoordinator> getPenCoordinators() {
     return this.penCoordinatorRepository.findAll().stream().map(PenCoordinatorMapper.mapper::toStruct).collect(Collectors.toList());
-  }
-
-  protected int execUpdate(final String updateStatement) {
-    val em = this.emf.createEntityManager();
-
-    val tx = em.getTransaction();
-
-    var rowsUpdated = 0;
-    // below timeout is in milli seconds, so it is 10 seconds.
-    try {
-      tx.begin();
-      log.info("generated sql is :: {}", updateStatement);
-      final var nativeQuery = em.createNativeQuery(updateStatement).setHint("javax.persistence.query.timeout", 10000);
-      rowsUpdated = nativeQuery.executeUpdate();
-      tx.commit();
-    } catch (final Exception e) {
-      log.error("Error occurred saving entity " + e.getMessage());
-      throw new SchoolAPIRuntimeException("Error occurred saving entity", e);
-    } finally {
-      if (em.isOpen()) {
-        em.close();
-      }
-    }
-    return rowsUpdated;
   }
 
   protected String prepareUpdateStatement(final Mincode mincode, final PenCoordinator penCoordinator) {
