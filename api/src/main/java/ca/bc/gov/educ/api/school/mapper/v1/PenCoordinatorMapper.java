@@ -13,6 +13,7 @@ public interface PenCoordinatorMapper {
 
   @Mapping(target = "schoolNumber", source = "mincode.schlNo")
   @Mapping(target = "districtNumber", source = "mincode.distNo")
+  @Mapping(target = "penCoordinatorName", expression = "java(org.apache.commons.lang3.StringUtils.trimToEmpty(entity.getPenCoordinatorName()))")
   @Mapping(target = "mincode", expression = "java(org.apache.commons.lang3.StringUtils.trimToEmpty(entity.getMincode().getDistNo()).concat(org.apache.commons.lang3.StringUtils.trimToEmpty(entity.getMincode().getSchlNo())))")
   PenCoordinator toStruct(PenCoordinatorEntity entity);
 

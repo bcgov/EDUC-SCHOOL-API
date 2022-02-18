@@ -7998,5 +7998,21 @@
     "penCoordinatorEmail": "tsheardownrr@infoseek.co.jp",
     "penCoordinatorFax": "854-777-3271",
     "sendPenResultsVia": "E"
+  },
+  {
+    "districtNumber": 555,
+    "schoolNumber": 51525,
+    "penCoordinatorName": null,
+    "penCoordinatorEmail": "tsheardownrr@infoseek.co.jp",
+    "penCoordinatorFax": "854-777-3271",
+    "sendPenResultsVia": "E"
+  },
+  {
+    "districtNumber": 999,
+    "schoolNumber": 51885,
+    "penCoordinatorName": "",
+    "penCoordinatorEmail": "tsheardownrr@infoseek.co.jp",
+    "penCoordinatorFax": "854-777-3271",
+    "sendPenResultsVia": "E"
   }
 ]
