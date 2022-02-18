@@ -42,6 +42,14 @@ public class PenCoordinatorServiceTest {
   }
 
   @Test
+  public void testGetPenCoordinators_shouldProduceOutput() {
+    val data = this.service.getPenCoordinators();
+    for(val coordinator : data) {
+      assertThat(coordinator.getPenCoordinatorName()).isNotNull();
+    }
+  }
+
+  @Test
   public void testGetPenCoordinator_givenDifferentInputs_shouldProduceOutput() {
     val data = this.service.getPenCoordinatorByMinCode("123546789");
     assertThat(data).isEmpty();
