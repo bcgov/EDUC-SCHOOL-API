@@ -199,7 +199,7 @@ public class SchoolAPIControllerTest {
   }
 
   @Test
-  public void testDeleteFedProvCode_GivenValidFedProvSchoolCode_ShouldReturnStatusOK() throws Exception {
+  public void testDeleteFedProvCode_GivenValidFedProvSchoolCode_ShouldReturnStatusNoContent() throws Exception {
     var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
 
     this.mockMvc.perform(delete("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "DELETE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
