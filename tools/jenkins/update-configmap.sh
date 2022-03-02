@@ -57,7 +57,12 @@ curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scope
   -H "Authorization: Bearer $TKN" \
   -d "{\"description\": \"Write scope for fed to provincial school codes \",\"id\": \"WRITE_FED_PROV_CODE\",\"name\": \"WRITE_FED_PROV_CODE\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
-
+echo
+echo Writing SCOPE_DELETE_FED_PROV_CODE
+curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TKN" \
+  -d "{\"description\": \"Write scope for fed to provincial school codes \",\"id\": \"DELETE_FED_PROV_CODE\",\"name\": \"DELETE_FED_PROV_CODE\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
