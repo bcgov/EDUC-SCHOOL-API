@@ -63,4 +63,24 @@ public class FedProvCodeService extends BaseService {
       .append("')"); // end single quote
     return builder.toString();
   }
+
+  protected String prepareDeleteStatement(final FedProvSchoolCode fedProvCode) {
+    val builder = new StringBuilder();
+    builder
+            .append("DELETE FROM TABLE_MAP WHERE MAPVAL2 = '") // end with beginning single quote
+            .append(StringUtils.trimToEmpty(fedProvCode.getProvincialCode()))
+                            .append("' AND TABMAP_KEY = '")
+                            .append(StringUtils.trimToEmpty(fedProvCode.getKey()))
+                            .append("' AND MAPVAL1 = '")
+                            .append(StringUtils.trimToEmpty(fedProvCode.getFederalCode()))
+.append("'");
+
+    // end single quote
+    return builder.toString();
+  }
+
+  public void deleteFedProvCode(FedProvSchoolCode fedProvSchoolCode) {
+    val deleteStatement = this.prepareDeleteStatement(fedProvSchoolCode);
+    this.execUpdate(deleteStatement);
+  }
 }
