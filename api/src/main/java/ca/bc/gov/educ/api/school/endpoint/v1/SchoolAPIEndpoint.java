@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -107,4 +108,13 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to create FedProvSchoolCode.", description = "Endpoint to create FedProvSchoolCode.")
   @Schema(name = "PenCoordinator", implementation = PenCoordinator.class)
   ResponseEntity<FedProvSchoolCode> createFedProvCode(@Validated @RequestBody FedProvSchoolCode fedProvSchoolCode);
+  /**
+   * Delete by mincode response entity.
+   * @return the response entity
+   */
+  @DeleteMapping("/federal-province-codes")
+  @PreAuthorize("hasAuthority('SCOPE_DELETE_FED_PROV_CODE')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"), @ApiResponse(responseCode = "404", description = "NOT FOUND."), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
+  ResponseEntity<Void> deleteFedProvCode(@Validated @RequestBody FedProvSchoolCode fedProvSchoolCode);
+
 }

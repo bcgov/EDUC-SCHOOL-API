@@ -198,6 +198,15 @@ public class SchoolAPIControllerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$[0].provincialCode").value(fedProvCode.getProvincialCode()));
   }
 
+  @Test
+  public void testDeleteFedProvCode_GivenValidFedProvSchoolCode_ShouldReturnStatusOK() throws Exception {
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+
+    this.mockMvc.perform(delete("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "DELETE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isNoContent());
+  }
+
+
   private SchoolEntity createSchool() {
     var mincode = Mincode.builder().distNo("123").schlNo("45678").build();
     return SchoolEntity.builder()
