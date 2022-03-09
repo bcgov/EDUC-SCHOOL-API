@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -15,9 +16,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FedProvSchoolCode {
+  @NotNull
   @Pattern(regexp = "NOM_SCHL", message = "Only support nom school")
   String key;
+  @NotNull
   String federalCode;
   @Size(max = 8)
+  @NotNull
   String provincialCode;
 }

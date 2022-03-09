@@ -30,6 +30,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -86,7 +89,7 @@ public class SchoolAPIControllerTest {
   @Before
   public void setUp() throws IOException {
     MockitoAnnotations.openMocks(this);
-    schoolEntity = schoolRepository.save(createSchool());
+    schoolEntity = schoolRepository.save(createSchool("123", "45678"));
 
     final File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("mock-pen-coordinator.json")).getFile());
     final List<PenCoordinator> structs = new ObjectMapper().readValue(file, new TypeReference<>() {
@@ -178,12 +181,35 @@ public class SchoolAPIControllerTest {
 
   @Test
   public void testCreateFedProvCode_GivenValidFedProvSchoolCode_ShouldReturnStatusOK() throws Exception {
+    schoolEntity = schoolRepository.save(createSchool("100", "10001"));
+    schoolService.reloadCache();
     var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
 
     this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
       .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isOk())
       .andExpect(MockMvcResultMatchers.jsonPath("$.federalCode").value(fedProvCode.getFederalCode()))
       .andExpect(MockMvcResultMatchers.jsonPath("$.provincialCode").value(fedProvCode.getProvincialCode()));
+  }
+
+  @Test
+  public void testCreateFedProvCode_GivenValidFedProvSchoolCodeClosedSchool_ShouldReturnStatusOK() throws Exception {
+    schoolEntity = schoolRepository.save(createClosedSchool("100", "10001"));
+    schoolService.reloadCache();
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+
+    this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void testCreateFedProvCode_GivenValidFedProvSchoolCodeAlreadyExists_ShouldReturnStatusOK() throws Exception {
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+    this.fedProvCodeService.createFedProvCode(fedProvCode);
+    schoolEntity = schoolRepository.save(createSchool("100", "10001"));
+    schoolService.reloadCache();
+
+    this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
+      .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -207,12 +233,21 @@ public class SchoolAPIControllerTest {
   }
 
 
-  private SchoolEntity createSchool() {
-    var mincode = Mincode.builder().distNo("123").schlNo("45678").build();
+  private SchoolEntity createSchool(String distNo, String schoolNo) {
+    var mincode = Mincode.builder().distNo(distNo).schlNo(schoolNo).build();
     return SchoolEntity.builder()
         .mincode(mincode)
         .schoolName("Victoria High School")
         .build();
+  }
+
+  private SchoolEntity createClosedSchool(String distNo, String schoolNo) {
+    var mincode = Mincode.builder().distNo(distNo).schlNo(schoolNo).build();
+    return SchoolEntity.builder()
+      .mincode(mincode)
+      .closedDate(LocalDate.now().minus(1, ChronoUnit.DAYS).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+      .schoolName("Victoria High School")
+      .build();
   }
 
   private static String asJsonString(final Object obj) {
