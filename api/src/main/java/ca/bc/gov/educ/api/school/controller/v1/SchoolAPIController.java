@@ -109,7 +109,7 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   private void validateFedProvCodePayload(FedProvSchoolCode fedProvSchoolCode) {
     try {
       var school = getSchoolByMinCode(fedProvSchoolCode.getProvincialCode());
-      if ((school.getClosedDate() != null && LocalDate.parse(school.getClosedDate(), formatter).isBefore(LocalDate.now()))) {
+      if ((StringUtils.isNotBlank(school.getClosedDate()) && LocalDate.parse(school.getClosedDate(), formatter).isBefore(LocalDate.now()))) {
         ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Invalid provincial code provided, school is closed.").status(BAD_REQUEST).build();
         throw new InvalidPayloadException(error);
       }
