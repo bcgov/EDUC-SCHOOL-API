@@ -23,9 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -113,7 +115,11 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
         ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Invalid provincial code provided, school is closed.").status(BAD_REQUEST).build();
         throw new InvalidPayloadException(error);
       }
-    }catch (EntityNotFoundException e) {
+    }
+    catch(DateTimeParseException e1) {
+      //Do nothing, just means the school is not closed
+    }
+    catch (EntityNotFoundException e) {
       ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Invalid provincial code provided.").status(BAD_REQUEST).build();
       throw new InvalidPayloadException(error);
     }
