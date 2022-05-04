@@ -213,6 +213,19 @@ public class SchoolAPIControllerTest {
   }
 
   @Test
+  public void testCreateFedProvCode_GivenValidFedProvSchoolCodeCloseDateBad_ShouldReturnStatusOK() throws Exception {
+    var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
+    this.fedProvCodeService.createFedProvCode(fedProvCode);
+    var school = createSchool("100", "10001");
+    school.setClosedDate("00000000");
+    schoolEntity = schoolRepository.save(school);
+    schoolService.reloadCache();
+
+    this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
+      .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void testGetFedProvCodes_ShouldReturnStatusOK() throws Exception {
     var fedProvCode = FedProvSchoolCode.builder().key("NOM_SCHL").federalCode("1001").provincialCode("10010001").build();
     this.fedProvCodeService.createFedProvCode(fedProvCode);
