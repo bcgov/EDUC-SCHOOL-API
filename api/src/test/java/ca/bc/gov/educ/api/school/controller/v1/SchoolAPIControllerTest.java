@@ -221,8 +221,9 @@ public class SchoolAPIControllerTest {
     schoolEntity = schoolRepository.save(school);
     schoolService.reloadCache();
 
+    fedProvCode.setFederalCode("1002");
     this.mockMvc.perform(post("/api/v1/schools/federal-province-codes").with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_FED_PROV_CODE"))).contentType(MediaType.APPLICATION_JSON)
-      .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isBadRequest());
+      .accept(MediaType.APPLICATION_JSON).content(asJsonString(fedProvCode))).andDo(print()).andExpect(status().isOk());
   }
 
   @Test
