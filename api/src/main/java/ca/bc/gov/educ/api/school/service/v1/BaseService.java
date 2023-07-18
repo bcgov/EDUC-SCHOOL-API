@@ -4,7 +4,7 @@ import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 @Slf4j
 public abstract class BaseService {
@@ -24,7 +24,7 @@ public abstract class BaseService {
     try {
       tx.begin();
       log.info("generated sql is :: {}", updateStatement);
-      final var nativeQuery = em.createNativeQuery(updateStatement).setHint("javax.persistence.query.timeout", 10000);
+      final var nativeQuery = em.createNativeQuery(updateStatement).setHint("jakarta.persistence.query.timeout", 10000);
       rowsUpdated = nativeQuery.executeUpdate();
       tx.commit();
     } catch (final Exception e) {

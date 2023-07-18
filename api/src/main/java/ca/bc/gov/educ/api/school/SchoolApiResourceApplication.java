@@ -3,21 +3,22 @@ package ca.bc.gov.educ.api.school;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * The type School api resource application.
  */
 @SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableCaching
 @EnableAsync
 @EnableRetry
@@ -38,8 +39,9 @@ public class SchoolApiResourceApplication {
    * Add security exceptions for swagger UI and prometheus.
    */
   @Configuration
+  @EnableMethodSecurity
   static
-  class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+  class WebSecurityConfiguration {
 
     /**
      * Instantiates a new Web security configuration.
@@ -47,26 +49,20 @@ public class SchoolApiResourceApplication {
      */
     public WebSecurityConfiguration() {
       super();
-      SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
-
-    /**
-     * Configure paths to be excluded from security.
-     *
-     * @param web the web
-     */
-    @Override
-    public void configure(WebSecurity web) {
-      web.ignoring().antMatchers("/v3/api-docs/**",
-          "/actuator/health", "/actuator/prometheus","/actuator/**",
-          "/swagger-ui/**");
-    }
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
       http
-          .authorizeRequests()
-          .anyRequest().authenticated().and()
-          .oauth2ResourceServer().jwt();
+          .csrf(AbstractHttpConfigurer::disable)
+          .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/v3/api-docs/**",
+                  "/actuator/health", "/actuator/prometheus","/actuator/**",
+                  "/swagger-ui/**").permitAll()
+              .anyRequest().authenticated()
+          )
+          .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+      return http.build();
     }
   }
 
