@@ -53,7 +53,7 @@ public class PenCoordinatorService extends BaseService {
   }
 
   public List<PenCoordinator> getPenCoordinators() {
-    return this.penCoordinatorRepository.findAll().stream().map(PenCoordinatorMapper.mapper::toStruct).collect(Collectors.toList());
+    return this.penCoordinatorRepository.findAll().stream().map(PenCoordinatorMapper.mapper::toStruct).toList();
   }
 
   protected String prepareUpdateStatement(final Mincode mincode, final PenCoordinator penCoordinator) {
