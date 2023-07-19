@@ -15,7 +15,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +100,7 @@ public class SchoolService {
     try {
       writeLock.lock();
       this.mincodeSchoolEntityMap = schoolRepository.findAll().stream().collect(Collectors.toConcurrentMap(SchoolEntity::getMincode, Function.identity()));
-      this.schools = mincodeSchoolEntityMap.values().stream().map(SchoolMapper.mapper::toStructure).collect(Collectors.toList());
+      this.schools = mincodeSchoolEntityMap.values().stream().map(SchoolMapper.mapper::toStructure).toList();
       log.info("loaded {} entries into min code school map", this.schools.size());
     } finally {
       writeLock.unlock();

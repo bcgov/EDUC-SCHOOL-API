@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +53,7 @@ public class PenCoordinatorService extends BaseService {
   }
 
   public List<PenCoordinator> getPenCoordinators() {
-    return this.penCoordinatorRepository.findAll().stream().map(PenCoordinatorMapper.mapper::toStruct).collect(Collectors.toList());
+    return this.penCoordinatorRepository.findAll().stream().map(PenCoordinatorMapper.mapper::toStruct).toList();
   }
 
   protected String prepareUpdateStatement(final Mincode mincode, final PenCoordinator penCoordinator) {
