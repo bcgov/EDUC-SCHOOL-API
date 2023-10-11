@@ -50,7 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {SchoolApiResourceApplication.class})
-//@ActiveProfiles("test")
 @Slf4j
 @SuppressWarnings({"java:S112", "java:S100", "java:S1192", "java:S2699"})
 @AutoConfigureMockMvc
