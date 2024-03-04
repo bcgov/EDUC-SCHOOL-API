@@ -18,6 +18,7 @@ public interface SchoolFundingGroupMapper {
   @Mapping(target = "schlNo", source = "schoolFundingGroupEntity.schoolFundingGroupID.schlNo")
   @Mapping(target = "fundingGroupCode", source = "schoolFundingGroupEntity.schoolFundingGroupID.fundingGroupCode")
   @Mapping(target = "fundingGroupSubCode", source = "schoolFundingGroupEntity.schoolFundingGroupID.fundingGroupSubCode")
+  @Mapping(target = "mincode", expression = "java(org.apache.commons.lang3.StringUtils.trimToEmpty(schoolFundingGroupEntity.getSchoolFundingGroupID().getDistNo()).concat(org.apache.commons.lang3.StringUtils.trimToEmpty(schoolFundingGroupEntity.getSchoolFundingGroupID().getSchlNo())))")
   SchoolFundingGroup toStructure(SchoolFundingGroupEntity schoolFundingGroupEntity);
 
 }

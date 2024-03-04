@@ -26,6 +26,8 @@ public class SchoolFundingGroup {
   @NotNull(message = "schlNo can not be null.")
   private String schlNo;
 
+  private String mincode;
+
   private String fundingGroupCode;
 
   private String fundingGroupSubCode;
