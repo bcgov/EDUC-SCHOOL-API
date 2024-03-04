@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.school.endpoint.v1;
 import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCode;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import ca.bc.gov.educ.api.school.struct.v1.School;
+import ca.bc.gov.educ.api.school.struct.v1.SchoolFundingGroup;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 /**
  * The interface School api endpoint.
@@ -36,6 +38,14 @@ public interface SchoolAPIEndpoint {
   @Tag(name = "Endpoint to get School Entity.", description = "Endpoint to get School Entity By Mincode.")
   @Schema(name = "School", implementation = School.class)
   School getSchoolByMinCode(@PathVariable("minCode")  String mincode);
+
+  @GetMapping("/fundingGroups")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SCHOOL')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
+  @Transactional(readOnly = true)
+  @Tag(name = "Endpoint to get All School Funding Groups.", description = "Endpoint to get All School Funding Groups.")
+  @Schema(name = "School", implementation = School.class)
+  List<SchoolFundingGroup> getAllSchoolFundingGroups();
 
   /**
    * Gets all schools.
