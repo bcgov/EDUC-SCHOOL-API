@@ -4,8 +4,8 @@ import ca.bc.gov.educ.api.school.endpoint.v1.SchoolAPIEndpoint;
 import ca.bc.gov.educ.api.school.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.school.exception.InvalidPayloadException;
 import ca.bc.gov.educ.api.school.exception.errors.ApiError;
-import ca.bc.gov.educ.api.school.mapper.LocalDateTimeMapper;
 import ca.bc.gov.educ.api.school.mapper.v1.FedProvCodeMapper;
+import ca.bc.gov.educ.api.school.mapper.v1.SchoolFundingGroupMapper;
 import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
 import ca.bc.gov.educ.api.school.service.v1.FedProvCodeService;
 import ca.bc.gov.educ.api.school.service.v1.PenCoordinatorService;
@@ -13,17 +13,16 @@ import ca.bc.gov.educ.api.school.service.v1.SchoolService;
 import ca.bc.gov.educ.api.school.struct.v1.FedProvSchoolCode;
 import ca.bc.gov.educ.api.school.struct.v1.PenCoordinator;
 import ca.bc.gov.educ.api.school.struct.v1.School;
+import ca.bc.gov.educ.api.school.struct.v1.SchoolFundingGroup;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +44,7 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
    * The constant mapper.
    */
   private static final SchoolMapper mapper = SchoolMapper.mapper;
+  private static final SchoolFundingGroupMapper fundingMapper = SchoolFundingGroupMapper.mapper;
   private static final FedProvCodeMapper fedProvCodeMapper = FedProvCodeMapper.mapper;
   @Getter(AccessLevel.PRIVATE)
   private final SchoolService service;
@@ -71,6 +71,11 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
   }
 
   @Override
+  public List<SchoolFundingGroup> getAllSchoolFundingGroups() {
+    return getService().retrieveAllFundingGroups().stream().map(fundingMapper::toStructure).toList();
+  }
+
+  @Override
   public List<School> getAllSchools() {
     return getService().retrieveAllSchoolStructs();
   }
@@ -92,7 +97,7 @@ public class SchoolAPIController implements SchoolAPIEndpoint {
 
   @Override
   public List<FedProvSchoolCode> getFedProvCodes() {
-    return this.fedProvCodeService.getFedProvCodes("NOM_SCHL").stream().filter(Objects::nonNull).map(fedProvCodeMapper::toStruct).collect(Collectors.toList());
+    return this.fedProvCodeService.getFedProvCodes("NOM_SCHL").stream().filter(Objects::nonNull).map(fedProvCodeMapper::toStruct).toList();
   }
 
   @Override

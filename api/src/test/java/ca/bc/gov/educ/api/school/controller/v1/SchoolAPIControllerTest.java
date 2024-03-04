@@ -4,8 +4,11 @@ import ca.bc.gov.educ.api.school.SchoolApiResourceApplication;
 import ca.bc.gov.educ.api.school.mapper.v1.PenCoordinatorMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
+import ca.bc.gov.educ.api.school.model.v1.SchoolFundingGroupEntity;
+import ca.bc.gov.educ.api.school.model.v1.SchoolFundingGroupID;
 import ca.bc.gov.educ.api.school.repository.v1.FedProvCodeRepository;
 import ca.bc.gov.educ.api.school.repository.v1.PenCoordinatorRepository;
+import ca.bc.gov.educ.api.school.repository.v1.SchoolFundingGroupRepository;
 import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
 import ca.bc.gov.educ.api.school.service.v1.FedProvCodeService;
 import ca.bc.gov.educ.api.school.service.v1.SchoolService;
@@ -70,6 +73,9 @@ public class SchoolAPIControllerTest {
   SchoolRepository schoolRepository;
 
   @Autowired
+  SchoolFundingGroupRepository schoolFundingGroupRepository;
+
+  @Autowired
   FedProvCodeRepository fedProvCodeRepository;
 
   @Autowired
@@ -121,6 +127,22 @@ public class SchoolAPIControllerTest {
     GrantedAuthority grantedAuthority = () -> "SCOPE_READ_SCHOOL";
     var mockAuthority = oidcLogin().authorities(grantedAuthority);
     this.mockMvc.perform(get("/api/v1/schools").with(mockAuthority)).andDo(print()).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  public void testGetAllSchoolFundingGroups_GivenNoInput_ShouldReturnStatusOK() throws Exception {
+    schoolService.reloadCache();
+    SchoolFundingGroupEntity entity = new SchoolFundingGroupEntity();
+    SchoolFundingGroupID groupID = new SchoolFundingGroupID();
+    groupID.setDistNo("035");
+    groupID.setSchlNo("12345");
+    groupID.setFundingGroupCode("02");
+    groupID.setFundingGroupSubCode("05");
+    entity.setSchoolFundingGroupID(groupID);
+    schoolFundingGroupRepository.save(entity);
+    GrantedAuthority grantedAuthority = () -> "SCOPE_READ_SCHOOL";
+    var mockAuthority = oidcLogin().authorities(grantedAuthority);
+    this.mockMvc.perform(get("/api/v1/schools/fundingGroups").with(mockAuthority)).andDo(print()).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
