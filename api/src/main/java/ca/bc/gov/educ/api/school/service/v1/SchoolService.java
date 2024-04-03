@@ -5,8 +5,11 @@ import ca.bc.gov.educ.api.school.exception.SchoolAPIRuntimeException;
 import ca.bc.gov.educ.api.school.mapper.v1.SchoolMapper;
 import ca.bc.gov.educ.api.school.model.v1.Mincode;
 import ca.bc.gov.educ.api.school.model.v1.SchoolEntity;
+import ca.bc.gov.educ.api.school.model.v1.SchoolFundingGroupEntity;
+import ca.bc.gov.educ.api.school.repository.v1.SchoolFundingGroupRepository;
 import ca.bc.gov.educ.api.school.repository.v1.SchoolRepository;
 import ca.bc.gov.educ.api.school.struct.v1.School;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -15,7 +18,6 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,17 +43,21 @@ public class SchoolService {
    */
   @Getter(PRIVATE)
   private final SchoolRepository schoolRepository;
+  @Getter(PRIVATE)
+  private final SchoolFundingGroupRepository schoolFundingGroupRepository;
   private List<School> schools = new ArrayList<>();
   private Map<Mincode, SchoolEntity> mincodeSchoolEntityMap;
 
   /**
    * Instantiates a new School service.
    *
-   * @param schoolRepository School repository
+   * @param schoolRepository             School repository
+   * @param schoolFundingGroupRepository
    */
   @Autowired
-  public SchoolService(SchoolRepository schoolRepository) {
+  public SchoolService(SchoolRepository schoolRepository, SchoolFundingGroupRepository schoolFundingGroupRepository) {
     this.schoolRepository = schoolRepository;
+    this.schoolFundingGroupRepository = schoolFundingGroupRepository;
   }
 
   /**
@@ -72,6 +78,10 @@ public class SchoolService {
     } else {
       throw new EntityNotFoundException(SchoolEntity.class, MINCODE_ATTRIBUTE, mincode);
     }
+  }
+
+  public List<SchoolFundingGroupEntity> retrieveAllFundingGroups() {
+    return this.schoolFundingGroupRepository.findAll();
   }
 
   /**
