@@ -30,11 +30,11 @@ env:
   TAG: "latest"
   TARGET_ENV: "prod"
   MIN_REPLICAS: "3"
-  MAX_REPLICAS: "3"
-  MIN_CPU: "50m"
-  MAX_CPU: "300m"
-  MIN_MEM: "650Mi"
-  MAX_MEM: "750Mi"
+  MAX_REPLICAS: "4"
+  MIN_CPU: "250m"
+  MAX_CPU: "500m"
+  MIN_MEM: "850Mi"
+  MAX_MEM: "1000Mi"
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
