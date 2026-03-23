@@ -1,3 +1,5 @@
+![Lifecycle:Deprecated](https://img.shields.io/badge/Lifecycle-Deprecated-red)
+
 # Ministry of Education PEN Registry
 Replacement of current personal education number (PEN) registry
 
